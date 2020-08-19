@@ -104,8 +104,8 @@ class GeneratorHubInterface(nn.Module):
 
     def sample(self, sentence: str, beam: int = 1, verbose: bool = False, **kwargs) -> str:
         input = self.encode(sentence)
-        hypo = self.generate(input, beam, verbose, **kwargs)[0]['tokens']
-        return self.decode(hypo)
+        hypos = self.generate(input, beam, verbose, **kwargs)
+        return self.decode(hypos[0]['tokens']), hypos[0]['positional_scores']
 
     def generate(self, tokens: torch.LongTensor, beam: int = 5, verbose: bool = False, **kwargs) -> torch.LongTensor:
         sample = self._build_sample(tokens)
